@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class MyArrayList<T extends Comparable<? super T>> {
     private int count = 0;
-    private Object array[] = new Object[2];
+    private Object array[] = new Object[10];
 
     public MyArrayList() {}
     public MyArrayList(MyArrayList<? extends T> massiv){
@@ -98,8 +98,11 @@ public class MyArrayList<T extends Comparable<? super T>> {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < count; i++) {
             stringBuilder.append(array[i]);
-            stringBuilder.append(" ");
+            if (i < count - 1) {
+                stringBuilder.append(" ");
+            }
         }
         return stringBuilder.toString();
     }
+
 }
