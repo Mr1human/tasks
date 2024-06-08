@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class MyArrayList<T extends Comparable<? super T>> {
     private int count = 0;
-    private Object array[] = new Object[10];
+    private Object array[] = new Object[2];
 
     public MyArrayList() {}
     public MyArrayList(MyArrayList<? extends T> massiv){
@@ -19,14 +19,14 @@ public class MyArrayList<T extends Comparable<? super T>> {
         if (count < array.length) {
             array[count++] = x;
         } else {
-            Object[] tmp = new Object[count + 1];
+            Object[] tmp = new Object[count * 2];
             System.arraycopy(array, 0, tmp, 0, count);
-            tmp[tmp.length - 1] = x;
+            tmp[count++] = x;
             array = tmp;
         }
     }
 
-    public void addAll(int index, MyArrayList<T> massiv) {
+    public void addAll(int index, MyArrayList<? extends T> massiv) {
         Object[] tmp = new Object[this.length() + massiv.length()];
         System.arraycopy(array, 0, tmp, 0, index);
         for (int i = 0; i < massiv.length(); i++) {
@@ -38,11 +38,15 @@ public class MyArrayList<T extends Comparable<? super T>> {
     }
 
     public void remove(int index) {
-        Object[] tmp = new Object[this.length() - 1];
-        System.arraycopy(array, 0, tmp, 0, index);
-        System.arraycopy(array, index + 1, tmp, index, this.length() - 1 - index);
-        array = tmp;
-        count--;
+        if (get(index)!=null){
+            Object[] tmp = new Object[this.length() - 1];
+            System.arraycopy(array, 0, tmp, 0, index);
+            System.arraycopy(array, index + 1, tmp, index, this.length() - 1 - index);
+            array = tmp;
+            count--;
+        }else{
+            System.out.println("index was not found");
+        }
     }
 
     public static <T extends Comparable<? super T>> void sortBubble(MyArrayList<T> massiv){
@@ -81,12 +85,21 @@ public class MyArrayList<T extends Comparable<? super T>> {
         }
     }
     public T get(int index) {
-        T tmp = (T) array[index];
-        return tmp;
+        if (index < count && index >=0){
+            T tmp = (T) array[index];
+            return tmp;
+        }else{
+            return null;
+        }
     }
 
     @Override
     public String toString() {
-        return Arrays.toString(array);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            stringBuilder.append(array[i]);
+            stringBuilder.append(" ");
+        }
+        return stringBuilder.toString();
     }
 }
